@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C++ Express 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDL2_Lessons", "SDL2_Lessons\SDL2_Lessons.vcxproj", "{94569C68-754D-4AC5-A0D9-2BB5941A43ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{94569C68-754D-4AC5-A0D9-2BB5941A43ED}.Debug|Win32.ActiveCfg = Debug|Win32
+		{94569C68-754D-4AC5-A0D9-2BB5941A43ED}.Debug|Win32.Build.0 = Debug|Win32
+		{94569C68-754D-4AC5-A0D9-2BB5941A43ED}.Release|Win32.ActiveCfg = Release|Win32
+		{94569C68-754D-4AC5-A0D9-2BB5941A43ED}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
