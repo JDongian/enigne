@@ -1,1 +1,0 @@
-xcopy /e "C:\Users\Randall\Documents\Visual Studio 2010\Projects\SDL2_Lessons" "C:\Users\Randall\Documents\GitHub\enigne\source"
