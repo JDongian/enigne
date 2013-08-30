@@ -2,27 +2,63 @@ import PIL
 import os
 import yesno
 
+from pprint import pprint
+
 directory = raw_input("Directory of images: ")
 recursive = yesno.query_yes_no("Recursive? ", default="no")
 
-def eval(arrangement):
+def eval(positions):
     x = 0
     y = 0
-    for xval,yval in arrangement:
-        if xval > x:
-            x = xval
-        if yval > y:
-            y = yval
+    #print 'Evaluating:'
+    #pprint(positions)
+    for x_val, y_val in positions:
+        if x_val > x:
+            x = x_val
+        if y_val > y:
+            y = y_val
     return x*y
 
-def arrange(image_data):
-    image_data.sort()
-    arrangement = image_data[0][0], (0,0)
-    print arrangement
-    for im in image_data:
-        print im
+def update_positions(positions, new_box):
+    #print 'args:', positions, new_box
+    old = new_box[0]
+    p = positions[:]
+    p.remove(old)
+    p.append((new_box[1][0][0]+old[0], old[1]))
+    p.append((old[0], new_box[1][0][1]+old[1]))
+    return p
 
-arrange([('apple', (90, 29)), ('pear', (10, 30)), ('bannana', (100, 100))])
+def fit_box(positions, arrangement, box):
+    test = update_positions(positions, (positions[0], (box[1], box[0])))
+    best_fit = eval(test), positions[0]
+    for p in positions[1:]:
+        test = update_positions(positions, (p, (box[1], box[0])))
+        if eval(test) < best_fit[0]:
+            best_fit = test, p
+        if len(test) > 5:
+            break
+    return best_fit[1]
 
+def arrange(boxes):
+    boxes.sort(key=lambda v: v[1])
+    arrangement = [((0,0), boxes.pop())]
+    curr_box = arrangement[0][1]
+    positions = [(curr_box[1][0], arrangement[0][0][1]), (arrangement[0][0][0], curr_box[1][1])]
+    for b in boxes[::-1]:
+        #print 'fitting...', b
+        optimal_fit = fit_box(positions, arrangement, b)
+        arrangement.append((optimal_fit, b))
+        positions.remove(optimal_fit)
+        positions.append((arrangement[-1][1][1][0]+optimal_fit[0], optimal_fit[1]))
+        positions.append((optimal_fit[0], arrangement[-1][1][1][1]+optimal_fit[1]))
+    return arrangement
 
+def place(boxes):
+    boxes.sort(key=lambda v: max(v[1][0], v[1][1]), reverse=True)
+    pprint(boxes)
+    return arrange(boxes)
 
+if __name__ == '__main__':
+    test = ([('apple', (90, 29)), ('orange', (11, 19)), ('durian', (40, 50)),
+        ('cane', (80, 10)), ('pear', (10, 30)), ('bannana', (100, 100))])
+    print place(test)
