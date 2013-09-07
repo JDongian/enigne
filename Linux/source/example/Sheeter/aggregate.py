@@ -1,11 +1,8 @@
-import PIL
+from PIL import Image
 import os
 import yesno
 
 from pprint import pprint
-
-directory = raw_input("Directory of images: ")
-recursive = yesno.query_yes_no("Recursive? ", default="no")
 
 def eval(positions):
     x = 0
@@ -58,7 +55,39 @@ def place(boxes):
     pprint(boxes)
     return arrange(boxes)
 
+def composite(arrangement):
+    x = 0
+    y = 0
+    boundaries = zip(*arrangement)
+    #TODO: something
+    for x_val, y_val in zip(boundaries[0][l]+boundaries[0][0]):
+        if x_val > x:
+            x = x_val
+        if y_val > y:
+            y = y_val
+    im = Image.new("RGBA", (512, 512), "white")
+
+def load_images(dirname, recursive=False):
+    if recursive:
+        for dirname, dirnames, filenames in os.walk(directory):
+            for filename in filenames:
+                if PIL_check_image(dirname+'/'+filename):
+                    print 'file:', os.path.join(dirname, filename)
+    else:
+        for filename in os.listdir(directory):
+            if PIL_check_image(dirname+'/'+filename):
+                print 'file:', os.path.join(dirname, filename)
+
+def PIL_check_image(path):
+    try:
+        return Image.open(path)
+    except IOError:
+        return False
+
 if __name__ == '__main__':
+    #directory = raw_input("Directory of images: ")
+    #recursive = yesno.query_yes_no("Recursive? ", default="no")
+    #load_images(directory, recursive)
     test = ([('apple', (90, 29)), ('orange', (11, 19)), ('durian', (40, 50)),
         ('cane', (80, 10)), ('pear', (10, 30)), ('bannana', (100, 100))])
     print place(test)
