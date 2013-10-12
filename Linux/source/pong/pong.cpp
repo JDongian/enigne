@@ -1,7 +1,6 @@
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include <string>
-
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const int SCREEN_BPP = 32; //32-bit color mode
