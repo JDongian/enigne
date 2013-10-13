@@ -1,6 +1,7 @@
 #include "SDL/SDL.h"
 #include "SDL/SDL_image.h"
 #include <string>
+
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 const int SCREEN_BPP = 32; //32-bit color mode
@@ -10,6 +11,21 @@ SDL_Surface *paddle_sheet = NULL;
 SDL_Surface *screen = NULL;
 
 SDL_Event event;
+
+class Paddle {
+    private:
+        SDL_Rect clip;
+        float x_pos;
+        float y_pos;
+        float length;
+        float width;
+        float velocity;
+    public:
+        Paddle(int x, int y, int len);
+        void update_position();
+        void handle_events();
+        void show();
+};
 
 class Ball {
     private:
@@ -21,7 +37,7 @@ class Ball {
         double y_velocity;
     public:
         Ball(int x, int y, int r, double dx, double dy);
-        void update_position();
+        void update_position(Paddle user);
         void show();
 };
 
@@ -37,7 +53,7 @@ Ball::Ball(int x, int y, int r, double dx, double dy) {
     clip.h = radius*2;
 }
 
-void Ball::update_position() {
+void Ball::update_position(Paddle user) {
     /* X position update. */
     if (0 >= x_pos) {
         x_pos = 0.01;
@@ -61,27 +77,16 @@ void Ball::update_position() {
     printf("%f, %f\n", x_velocity, y_velocity);
 }
 
-class Paddle {
-    private:
-        SDL_Rect clip;
-        float x_pos;
-        float y_pos;
-        float length;
-        float width;
-        float velocity;
-    public:
-        Paddle(int x, int y, int len);
-        void update_position();
-        void handle_events();
-        void show();
-};
-
 Paddle::Paddle(int x, int y, int len) {
     x_pos = x;
     y_pos = y;
     length = 128;
     width = 16;
     velocity = 0;
+}
+
+bool Paddle::hit_ball(SDL_Rect position) {
+    return 0;
 }
 
 void Paddle::update_position() {
@@ -207,7 +212,7 @@ int main(int argc, char* args[]) {
                 quit = true;
             }
         }
-        ball1.update_position(); 
+        ball1.update_position(player_paddle); 
         player_paddle.update_position();
         player_paddle.handle_events();
         SDL_FillRect(screen, &screen->clip_rect,
