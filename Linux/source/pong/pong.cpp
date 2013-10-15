@@ -23,7 +23,7 @@ class Paddle {
     public:
         Paddle(int x, int y, int len);
         void update_position();
-        bool hit_ball(float x, float y, float r);
+        int hit_ball(float x, float y, float r);
         void handle_events();
         void show();
 };
@@ -56,9 +56,18 @@ Ball::Ball(int x, int y, int r, double dx, double dy) {
 
 void Ball::update_position(Paddle user) {
     /* Paddle Collision */
-    if (user.hit_ball(x_pos, y_pos, radius)) {
-        x_pos += 1;
+    int collision_status = user.hit_ball(x_pos, y_pos, radius);
+    if (collision_status == 1) {
+        x_pos += 0.5;
         x_velocity *= -1;
+        return;
+    } else if (collision_status == 2) {
+        y_pos += y_velocity-0.5;
+        y_velocity *= -1;
+        return;
+    } else if (collision_status == 3) {
+        y_pos += y_velocity+0.5;
+        y_velocity *= -1;
         return;
     }
     /* X position update. */
@@ -91,15 +100,24 @@ Paddle::Paddle(int x, int y, int len) {
     velocity = 0;
 }
 
-bool Paddle::hit_ball(float x, float y, float r) {
+int Paddle::hit_ball(float x, float y, float r) {
     /* If the ball is past the front of the paddle */
     if (x_pos+width > x) {
         /* If the ball is directly in front of the paddle */
-        if (y_pos < y && y < y_pos+length) {
-            return true;
+        if (y_pos < y && y+r < y_pos+length) {
+            return 1;
         }
     }
-    return false;
+    if (x_pos < x+r && x < x_pos+width) {
+        printf("Side\n");
+        if (y_pos < y+r && y-r < y_pos+length/2) {
+            return 2;
+        }
+        if (y_pos+length/2 < y+r && y < y_pos+length) {
+            return 3;
+        }
+    }
+    return 0;
 }
 
 void Paddle::update_position() {
