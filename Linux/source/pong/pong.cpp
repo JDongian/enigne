@@ -23,6 +23,7 @@ class Paddle {
     public:
         Paddle(int x, int y, int len);
         void update_position();
+        bool hit_ball(float x, float y, float r);
         void handle_events();
         void show();
 };
@@ -54,6 +55,12 @@ Ball::Ball(int x, int y, int r, double dx, double dy) {
 }
 
 void Ball::update_position(Paddle user) {
+    /* Paddle Collision */
+    if (user.hit_ball(x_pos, y_pos, radius)) {
+        x_pos += 1;
+        x_velocity *= -1;
+        return;
+    }
     /* X position update. */
     if (0 >= x_pos) {
         x_pos = 0.01;
@@ -74,7 +81,6 @@ void Ball::update_position(Paddle user) {
     } else {
         y_pos += y_velocity;
     }
-    printf("%f, %f\n", x_velocity, y_velocity);
 }
 
 Paddle::Paddle(int x, int y, int len) {
@@ -85,8 +91,15 @@ Paddle::Paddle(int x, int y, int len) {
     velocity = 0;
 }
 
-bool Paddle::hit_ball(SDL_Rect position) {
-    return 0;
+bool Paddle::hit_ball(float x, float y, float r) {
+    /* If the ball is past the front of the paddle */
+    if (x_pos+width > x) {
+        /* If the ball is directly in front of the paddle */
+        if (y_pos < y && y < y_pos+length) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void Paddle::update_position() {
@@ -218,7 +231,7 @@ int main(int argc, char* args[]) {
         SDL_FillRect(screen, &screen->clip_rect,
                      SDL_MapRGB(screen->format, 0x00, 0x00, 0x00));
         ball1.show();
-        player_paddle.show(); 
+        player_paddle.show();
         if (SDL_Flip(screen) == -1) {
             return 1;
         }
