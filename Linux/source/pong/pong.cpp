@@ -109,7 +109,6 @@ int Paddle::hit_ball(float x, float y, float r) {
         }
     }
     if (x_pos < x+r && x < x_pos+width) {
-        printf("Side\n");
         if (y_pos < y+r && y-r < y_pos+length/2) {
             return 2;
         }
