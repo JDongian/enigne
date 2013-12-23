@@ -6,7 +6,7 @@ DBG=-g
 OUT=life
 
 build: $(FILES)
-	$(CC) -o $(OUT) $(FILES) $(OPT) $(LIB)
+	$(CC) -o $(OUT) $(FILES) $(OPT) -O3 $(LIB)
 
 debug: $(FILES)
 	$(CC) -o $(OUT) $(FILES) $(OPT) $(LIB) $(DBG)

@@ -229,9 +229,11 @@ int main(int argc, char* args[]) {
     if (load_files() == false) {
         return 1;
     }
+    int last_frame_time = 0;
     Ball ball1(50, 50, 32, 0.4, 0.4);
     Paddle player_paddle(30, 0, 256);
     while (!quit) {
+        last_frame_time = SDL_GetTicks();
         if (SDL_PollEvent(&event)) {
             if (event.type == SDL_KEYDOWN) {
                 /* Hotkey: 'q' for quit. */
@@ -252,6 +254,7 @@ int main(int argc, char* args[]) {
         if (SDL_Flip(screen) == -1) {
             return 1;
         }
+        printf("FPS: %d  \r", (SDL_GetTicks()-last_frame_time));
     }
     clean_up();
     return 0;

@@ -4,9 +4,8 @@
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_ttf.h"
 
-uint32_t last_frame_time = 0;
-
-
+#define TITLE "SDL Life"
+/*
 void render_text(int x, int y, SDL_Surface *surface,
                  TTF_Font* font, char buff[], SDL_Color c) {
     SDL_Surface* message = NULL;
@@ -35,31 +34,38 @@ void render_text(int x, int y, SDL_Surface *surface,
 //                  surface);
     SDL_FreeSurface(message);
 }
-
-void update_world(int w, int h, uint32_t* pxbuf) {
-    for (int i = 0; i < w*h; ++i) {
-        pxbuf[i] = 0xAAAAAAFF;
-    }
+*/
+void update_bugs(int w, int h, uint8_t* bugs) {
+    //
 }
 
-void draw_world(int w, int h, uint32_t* pxbuf, SDL_Renderer* r) {
-    SDL_Texture* texture = NULL;
-    texture = SDL_CreateTexture(r,
-                                SDL_PIXELFORMAT_RGBA8888,
-                                SDL_TEXTUREACCESS_STREAMING,
-                                w, h);
-    if (texture == NULL) {
-        printf(SDL_GetError());
-        return;
+void update_world(int w, int h, uint32_t* pxbuf, uint8_t* bugs, SDL_Texture* tex) {
+    for (int h_curr = 0; h_curr < h; ++h_curr) {
+        for (int w_curr = 0; w_curr < w; ++w_curr) {
+            switch (bugs[w*h_curr+w_curr]) {
+                case 0:
+                    pxbuf[w*h_curr+w_curr] = 0xFFFFFFFF;//RGBA
+                    break;
+                default:
+                    pxbuf[w*h_curr+w_curr] = 0x000000FF;//RGBA
+                    break;
+            }
+        }
     }
-    SDL_UpdateTexture(texture, NULL, pxbuf, w*sizeof(uint32_t));
+    SDL_UpdateTexture(tex, NULL, pxbuf, w*sizeof(uint32_t));
+}
+
+void draw_world(int w, int h, SDL_Texture* tex, SDL_Renderer* r) {
     SDL_RenderClear(r);
-    SDL_RenderCopy(r, texture, NULL, NULL);
+    SDL_RenderCopy(r, tex, NULL, NULL);
     SDL_RenderPresent(r);
 };
 
 int handle_key_down(SDL_Keysym keysym) {
     switch(keysym.sym) {
+        case SDLK_q:
+            return -1;
+            break;
         case SDLK_ESCAPE:
             return -1;
             break;
@@ -84,53 +90,63 @@ int process_events(void) {
     return 0;
 }
 
-int init_sdl(int w, int h, SDL_Window** window, SDL_Renderer** ren) {
+int init_sdl(int w, int h, SDL_Window** window, SDL_Renderer** ren, SDL_Texture** tex) {
     if (SDL_Init(SDL_INIT_EVERYTHING) == -1) {
         printf(SDL_GetError());
     }
-    *window = SDL_CreateWindow("OpenGL Life", 0, 0, w, h,
+    *window = SDL_CreateWindow(TITLE, 0, 0, w, h,
                                SDL_WINDOW_SHOWN);
-    if (window == NULL) {
+    if (*window == NULL) {
         printf(SDL_GetError());
         return 1;
     }
     *ren = SDL_CreateRenderer(*window, -1,
                               SDL_RENDERER_ACCELERATED |
                               SDL_RENDERER_PRESENTVSYNC);
-    if (ren == NULL) {
+    if (*ren == NULL) {
         printf(SDL_GetError());
         return 1;
     }
+    *tex = SDL_CreateTexture(*ren,
+                             SDL_PIXELFORMAT_RGBA8888,
+                             SDL_TEXTUREACCESS_STREAMING,
+                             w, h);
+    if (*tex == NULL) {
+        printf(SDL_GetError());
+        return 1;
+    }
+
     return 0;
 }
 
-int init_bugs(int w, int h, SDL_Window** window, SDL_Renderer** ren) {
-}
-
 int main(int argc, char** argv) {
-    int width = 640;
-    int height = 480;
+    uint32_t last_frame_time = 0;
+    uint32_t width = 640;
+    uint32_t height = 480;
     bool quit = false;
     SDL_Window* window = NULL;
     SDL_Renderer* ren = NULL;
+    SDL_Texture* texture = NULL;
     static uint32_t* pxbuf = NULL;
-    static uint32_t* bug_data = NULL;
+    static uint8_t* bug_data = NULL;
     //Initialize game
     pxbuf = new uint32_t[width*height];
-    bug_data = new uint32_t[width*height/4];
-    memset(pxbuf, 0xFFFFFFFF, width*height); 
-    memset(bug_data, 0, width*height/4); 
-    
-    init_sdl(width, height, &window, &ren);
-    printf("SDL successfully initialized.\n");
+    bug_data = new uint8_t[width*height];
+    memset(pxbuf, 0x00, width*height); 
+    memset(bug_data, 0x00, width*height); 
+
+    if(init_sdl(width, height, &window, &ren, &texture)) {
+        return 1;
+    }   printf("SDL successfully initialized.\n");
 
     while (!quit) {
         last_frame_time = SDL_GetTicks();
         if (process_events() == -1) {
             quit = true;
         }
-        update_world(width, height, pxbuf);
-        draw_world(width, height, pxbuf, ren);
+        update_bugs(width, height, bug_data);
+        update_world(width, height, pxbuf, bug_data, texture);
+        draw_world(width, height, texture, ren);
         printf("FPS: %f  \r", 1000./(SDL_GetTicks()-last_frame_time));
     }
     SDL_Quit();
