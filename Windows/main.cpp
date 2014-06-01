@@ -1,7 +1,19 @@
 #include <iostream>
 
+class TemplateGame : public Game
+{
+public:
+	TemplateGame() {}
+	virtual void Init();
+}
+
+void TemplateGame::Init()
+{
+
+}
+
 int main()
 {
-	std::cout << "hello world" << std::endl;
-	return 0;
+	TemplateGame game;
+
 }

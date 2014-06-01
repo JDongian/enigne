@@ -1,0 +1,48 @@
+﻿Build started 5/28/2014 7:03:21 PM.
+     1>Project "C:\Users\Randall\documents\visual studio 2010\Projects\TestGame\TestGame\TestGame.vcxproj" on node 2 (build target(s)).
+     1>PrepareForBuild:
+         Creating directory "C:\Users\Randall\documents\visual studio 2010\Projects\TestGame\Release\".
+       InitializeBuildStatus:
+         Creating "Release\TestGame.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt camera.cpp coreEngine.cpp freeLook.cpp freeMove.cpp game.cpp gameObject.cpp input.cpp lighting.cpp main.cpp math3d.cpp mesh.cpp renderingEngine.cpp renderUtil.cpp sdl_backend.cpp shader.cpp texture.cpp timing.cpp transform.cpp util.cpp window.cpp
+         camera.cpp
+     1>c:\users\randall\documents\visual studio 2010\projects\testgame\testgame\texture.h(5): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         coreEngine.cpp
+     1>c:\users\randall\documents\visual studio 2010\projects\testgame\testgame\texture.h(5): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         freeLook.cpp
+         freeMove.cpp
+         game.cpp
+     1>c:\users\randall\documents\visual studio 2010\projects\testgame\testgame\texture.h(5): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         gameObject.cpp
+     1>c:\users\randall\documents\visual studio 2010\projects\testgame\testgame\texture.h(5): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         input.cpp
+     1>input.cpp(2): fatal error C1083: Cannot open include file: 'SDL2/SDL.h': No such file or directory
+         lighting.cpp
+     1>c:\users\randall\documents\visual studio 2010\projects\testgame\testgame\texture.h(5): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         main.cpp
+     1>c:\users\randall\documents\visual studio 2010\projects\testgame\testgame\texture.h(5): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         math3d.cpp
+         mesh.cpp
+     1>mesh.cpp(2): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         renderingEngine.cpp
+     1>c:\users\randall\documents\visual studio 2010\projects\testgame\testgame\texture.h(5): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         renderUtil.cpp
+     1>renderUtil.cpp(2): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         sdl_backend.cpp
+     1>sdl_backend.cpp(2): fatal error C1083: Cannot open include file: 'SDL2/SDL.h': No such file or directory
+         shader.cpp
+     1>c:\users\randall\documents\visual studio 2010\projects\testgame\testgame\texture.h(5): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         texture.cpp
+     1>c:\users\randall\documents\visual studio 2010\projects\testgame\testgame\texture.h(5): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+         timing.cpp
+         transform.cpp
+         util.cpp
+     1>util.cpp(2): fatal error C1083: Cannot open include file: 'SDL2/SDL.h': No such file or directory
+         window.cpp
+     1>window.cpp(2): fatal error C1083: Cannot open include file: 'SDL2/SDL.h': No such file or directory
+     1>Done Building Project "C:\Users\Randall\documents\visual studio 2010\Projects\TestGame\TestGame\TestGame.vcxproj" (build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:15.83
