@@ -289,7 +289,7 @@ int main (int argc, char* argv[]) {
         time = SDL_GetTicks();
         process_events();
         draw_screen();
-        printf("\r%d FPS  ", SDL_GetTicks()-time);
+        printf("\r%.2f FPS  ", 1000.0 / (SDL_GetTicks() - time));
         if (time % 8 == 1) {
             fflush(stdout);
         }
